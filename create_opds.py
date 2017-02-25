@@ -32,7 +32,7 @@ def parse_command_line():
 
 class CommandLineErrorHandler(ErrorHandler):
     def warning(self, pattern, *params):
-        print 'Warning: ' + pattern % params
+        print( 'Warning: ' + pattern % params)
 
     def fatal(self, pattern, *params):
         exit('Fatal error: ' + pattern % params)

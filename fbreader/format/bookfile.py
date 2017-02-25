@@ -36,7 +36,7 @@ class BookFile(object):
 
     @staticmethod
     def __is_text(text):
-        return isinstance(text, str) or isinstance(text, unicode)
+        return isinstance(text, str)
 
     def __set_title__(self, title):
         if title and BookFile.__is_text(title):

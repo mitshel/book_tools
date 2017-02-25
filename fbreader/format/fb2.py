@@ -10,7 +10,7 @@ class FB2StructureException(Exception):
     def __init__(self, error):
         Exception.__init__(self, 'fb2 verification failed: %s' % error)
         if isinstance(error, Exception):
-            print traceback.print_exc()
+            print(traceback.print_exc())
 
 class Namespace(object):
     FICTION_BOOK = 'http://www.gribuser.ru/xml/fictionbook/2.0'
@@ -30,9 +30,9 @@ class FB2Base(BookFile):
             description = self.__detect_description(tree)
             if description:
                 self.description = description.strip()
-        except FB2StructureException, error:
+        except FB2StructureException as error:
             raise error
-        except Exception, error:
+        except Exception as error:
             raise FB2StructureException(error)
 
     @abstractmethod
@@ -147,10 +147,10 @@ class FB2Zip(FB2Base):
             self.__infos = list_zip_file_infos(self.__zip_file)
             if len(self.__infos) != 1:
                 raise FB2StructureException('archive contains %s files' % len(self.__infos))
-        except FB2StructureException, error:
+        except FB2StructureException as error:
             self.__zip_file.close()
             raise error
-        except Exception, error:
+        except Exception as error:
             self.__zip_file.close()
             raise FB2StructureException(error)
 

@@ -67,14 +67,14 @@ class EPub(BookFile):
                 self.issues.append(EPub.Issue.MIMETYPE_ITEM_IS_DEFLATED)
 
             with self.__zip_file.open(EPub.Entry.MIMETYPE) as mimetype_file:
-                if mimetype_file.read(30).rstrip('\n\r') != Mimetype.EPUB:
+                if mimetype_file.read(30).decode().rstrip('\n\r') != Mimetype.EPUB:
                     raise EPub.StructureException('\'mimetype\' item content is incorrect')
 
             self.__extract_metainfo()
-        except EPub.StructureException, error:
+        except EPub.StructureException as error:
             self.close()
             raise error
-        except Exception, error:
+        except Exception as error:
             self.close()
             raise EPub.StructureException(error.message)
 
