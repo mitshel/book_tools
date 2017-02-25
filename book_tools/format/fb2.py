@@ -2,9 +2,9 @@ import base64, os, traceback, zipfile
 from lxml import etree
 from abc import abstractmethod
 
-from fbreader.format.bookfile import BookFile
-from fbreader.format.mimetype import Mimetype
-from fbreader.format.util import list_zip_file_infos
+from book_tools.format.bookfile import BookFile
+from book_tools.format.mimetype import Mimetype
+from book_tools.format.util import list_zip_file_infos
 
 class FB2StructureException(Exception):
     def __init__(self, error):
@@ -17,8 +17,8 @@ class Namespace(object):
     XLINK = 'http://www.w3.org/1999/xlink'
 
 class FB2Base(BookFile):
-    def __init__(self, path, original_filename, mimetype):
-        BookFile.__init__(self, path, original_filename, mimetype)
+    def __init__(self, file, original_filename, mimetype):
+        BookFile.__init__(self, file, original_filename, mimetype)
         self.__namespaces = {'fb': Namespace.FICTION_BOOK, 'xlink': Namespace.XLINK}
         try:
             tree = self.__create_tree__()
@@ -126,12 +126,12 @@ class FB2Base(BookFile):
         return None
 
 class FB2(FB2Base):
-    def __init__(self, path, original_filename):
-        FB2Base.__init__(self, path, original_filename, Mimetype.FB2)
+    def __init__(self, file, original_filename):
+        FB2Base.__init__(self, file, original_filename, Mimetype.FB2)
 
     def __create_tree__(self):
         try:
-            return etree.parse(self.path)
+            return etree.parse(self.file)
         except:
             raise FB2StructureException('the file is not a valid XML')
 
@@ -139,8 +139,8 @@ class FB2(FB2Base):
         pass
 
 class FB2Zip(FB2Base):
-    def __init__(self, path, original_filename):
-        self.__zip_file = zipfile.ZipFile(path)
+    def __init__(self, file, original_filename):
+        self.__zip_file = zipfile.ZipFile(file)
         try:
             if self.__zip_file.testzip():
                 raise FB2StructureException('broken zip archive')
@@ -154,7 +154,7 @@ class FB2Zip(FB2Base):
             self.__zip_file.close()
             raise FB2StructureException(error)
 
-        FB2Base.__init__(self, path, original_filename, Mimetype.FB2_ZIP)
+        FB2Base.__init__(self, file, original_filename, Mimetype.FB2_ZIP)
 
     def __create_tree__(self):
         with self.__zip_file.open(self.__infos[0]) as entry:

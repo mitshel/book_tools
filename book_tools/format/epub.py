@@ -2,10 +2,10 @@ import os, shutil, urllib, zipfile
 from lxml import etree
 from tempfile import mktemp
 
-from fbreader.format.aes import encrypt
-from fbreader.format.bookfile import BookFile
-from fbreader.format.mimetype import Mimetype
-from fbreader.format.util import list_zip_file_infos
+from book_tools.format.aes import encrypt
+from book_tools.format.bookfile import BookFile
+from book_tools.format.mimetype import Mimetype
+from book_tools.format.util import list_zip_file_infos
 
 class EPub(BookFile):
     class Issue(object):
@@ -41,8 +41,8 @@ class EPub(BookFile):
         def __init__(self, message):
             Exception.__init__(self, 'ePub verification failed: ' + message)
 
-    def __init__(self, path, original_filename):
-        BookFile.__init__(self, path, original_filename, Mimetype.EPUB)
+    def __init__(self, file, original_filename):
+        BookFile.__init__(self, file, original_filename, Mimetype.EPUB)
         self.root_filename = None
         self.cover_fileinfos = []
 
@@ -50,7 +50,7 @@ class EPub(BookFile):
         self.__initialize()
 
     def __initialize(self):
-        self.__zip_file = zipfile.ZipFile(self.path)
+        self.__zip_file = zipfile.ZipFile(self.file)
         self.issues = []
         try:
             if self.__zip_file.testzip():
@@ -353,7 +353,7 @@ class EPub(BookFile):
 
     def encrypt(self, key, content_id, working_dir, files_to_keep=None):
         if self.get_encryption_info():
-            raise Exception('Cannot encrypt file %s, it is already encrypted' % self.path)
+            raise Exception('Cannot encrypt file %s, it is already encrypted' % self.file.name)
 
         if not files_to_keep:
             files_to_keep = [EPub.Entry.MANIFEST, EPub.Entry.METADATA, EPub.Entry.CONTAINER]

@@ -1,13 +1,13 @@
 import os, re
 from abc import abstractmethod, ABCMeta
 
-from fbreader.format.util import minify_cover
+from book_tools.format.util import minify_cover
 
 class BookFile(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, path, original_filename, mimetype):
-        self.path = path
+    def __init__(self, file, original_filename, mimetype):
+        self.file = file
         self.mimetype = mimetype
         self.original_filename = original_filename
         self.title = original_filename
