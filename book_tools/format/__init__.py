@@ -62,7 +62,8 @@ def detect_mime(file):
                         pass
         elif mime == Mimetype.OCTET_STREAM:
             mobiflag =  file.read(68)
-            if mobiflag.decode()[60:] == 'BOOKMOBI':
+            mobiflag = mobiflag[60:]
+            if mobiflag.decode() == 'BOOKMOBI':
                 return Mimetype.MOBI
     except:
         pass

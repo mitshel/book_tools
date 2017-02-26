@@ -1,25 +1,25 @@
 import os
-from fbreader.format import create_bookfile
+from book_tools.format import create_bookfile
 
-#book = create_bookfile("test_files/arduino.epub", "arduino.epub")
-#book = create_bookfile("test_files/Tolstoy_Aelita.132493.fb2", "Tolstoy_Aelita.132493.fb2")
-#book = create_bookfile("test_files/book.epub", "book.epub")
+file = "test_files/skazka.mobi"
+#file = "test_files/Tolstoy_Aelita.132493.fb2"
+#file = "test_files/book.epub"
+#file = "test_files/Volshebnye_skazki_Kitaja.fb2"
+#file = "test_files/Vector.mobi"
 
-file = "test_files/book.epub"
 path, name = os.path.split(file)
 if isinstance(file, str):
     f = open(file, 'rb')
 else:
     f = file
 
-book = create_bookfile(file, name)
-print("Created")
-title = book.title
+book = create_bookfile(f, name)
 
+title = book.title
 authors = book.authors
 tags = book.tags
 description = book.description
-path=book.path
+path=book.file.name
 mimetype=book.mimetype
 series_info=book.series_info
 lang=book.language_code
