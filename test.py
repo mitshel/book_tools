@@ -1,9 +1,9 @@
 import os
 from book_tools.format import create_bookfile
 
-#file = "test_files/skazka.mobi"
+file = "test_files/skazka.mobi"
 #file = "test_files/Tolstoy_Aelita.132493.fb2"
-file = "test_files/arduino.epub"
+#file = "test_files/arduino.epub"
 #file = "test_files/Volshebnye_skazki_Kitaja.fb2"
 #file = "test_files/Vector.mobi"
 
